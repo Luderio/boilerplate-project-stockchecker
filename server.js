@@ -1,12 +1,18 @@
 'use strict';
+
 require('dotenv').config();
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
+const helmet = require('helmet');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const requestIp = require('request-ip');
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
+require('./database-connection');
 
 const app = express();
 
@@ -28,7 +34,7 @@ fccTestingRoutes(app);
 
 //Routing for API 
 apiRoutes(app);  
-    
+
 //404 Not Found Middleware
 app.use(function(req, res, next) {
   res.status(404)
@@ -51,5 +57,29 @@ const listener = app.listen(process.env.PORT || 3000, function () {
     }, 3500);
   }
 });
+
+// Information Security
+
+app.use(helmet({
+  hidePoweredBy: {setTo: 'PHP 4.2.0'},
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'trusted-cdn.com'],
+      styleSrc: ["'self'"]
+    }
+  }
+}))
+
+
+//----------------------END OF INFOSEC CODES------------------------
+
+// BCRYPT HASHER
+const saltRounds = 12;
+
+
+
+//----------------------END OF BCRYPT CODES------------------------
+
 
 module.exports = app; //for testing
