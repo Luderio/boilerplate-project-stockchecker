@@ -15,6 +15,18 @@ require('./database-connection');
 
 const app = express();
 
+// Information Security
+
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+  defaultSrc: ["'self'"],
+  scriptSrc: ["'self'", 'https://code.jquery.com/jquery-2.2.1.min.js'],
+  styleSrc: ["'self'"]
+}}))
+
+
+//----------------------END OF INFOSEC CODES------------------------
+
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
@@ -57,17 +69,6 @@ const listener = app.listen(process.env.PORT || 3000, function () {
   }
 });
 
-// Information Security
-
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-  defaultSrc: ["'self'"],
-  scriptSrc: ["'self'", 'https://code.jquery.com/jquery-2.2.1.min.js'],
-  styleSrc: ["'self'"],
-}}))
-
-
-//----------------------END OF INFOSEC CODES------------------------
 
 
 
