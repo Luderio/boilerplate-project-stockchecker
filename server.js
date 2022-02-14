@@ -1,13 +1,12 @@
 'use strict';
 
+require('dotenv').config();
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const cors        = require('cors');
+
 const helmet = require('helmet');
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const requestIp = require('request-ip');
-require('dotenv').config();
 
 const apiRoutes         = require('./routes/api.js');
 const fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -61,11 +60,10 @@ const listener = app.listen(process.env.PORT || 3000, function () {
 // Information Security
 
 app.use(helmet({
-  hidePoweredBy: {setTo: 'PHP 4.2.0'},
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'trusted-cdn.com'],
+      scriptSrc: ["'self'", 'https://code.jquery.com/jquery-2.2.1.min.js'],
       styleSrc: ["'self'"]
     }
   }
@@ -74,12 +72,6 @@ app.use(helmet({
 
 //----------------------END OF INFOSEC CODES------------------------
 
-// BCRYPT HASHER
-const saltRounds = 12;
-
-
-
-//----------------------END OF BCRYPT CODES------------------------
 
 
 module.exports = app; //for testing
