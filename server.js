@@ -59,15 +59,12 @@ const listener = app.listen(process.env.PORT || 3000, function () {
 
 // Information Security
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'https://code.jquery.com/jquery-2.2.1.min.js'],
-      styleSrc: ["'self'"]
-    }
-  }
-}))
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+  defaultSrc: ["'self'"],
+  scriptSrc: ["'self'", 'https://code.jquery.com/jquery-2.2.1.min.js'],
+  styleSrc: ["'self'"],
+}}))
 
 
 //----------------------END OF INFOSEC CODES------------------------
